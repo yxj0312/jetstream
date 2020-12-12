@@ -24,9 +24,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/subscribe', function () {
-    return view('subscribe');
+    return view('subscribe', [ 'intent' => auth()->user()->createSetupIntent()]);
 })->name('subscribe');
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/subscribe', function (Request $request) {
-    dd($request->all());
+    
+    auth()->user()->newSubscription('Cashier', $request->plan)->create($request->paymentMethod);
+
+    return redirect('/dashboard');
 })->name('subscribe.post');

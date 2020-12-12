@@ -9,15 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
-                    <form action="{{ route('subscribe.post') }}" method="post" id="payment-form">
+                    <form action="{{ route('subscribe.post') }}" method="post" id="payment-form" data-secret="{{ $intent->client_secret }}">
                         @csrf
                         <div class="w-1/2 form-row">
+                            <label for="cardholder-name">Cardholder's Name</label>
+                            <div>
+                                <input type="text" id="cardholder-name" class="w-1/2 px-2 py-2 border">
+                            </div>
                             <div class="mt-4">
                                 <input type="radio" name="plan" id="standard" value="price_1HxJeMG7vbq98vf0V7q243Bf" checked>
                                 <label for="standard">Standard - €10 / month</label> <br>
 
                                 <input type="radio" name="plan" id="premium" value="price_1HxJeMG7vbq98vf0anLvqeNw" checked>
-                                <label for="premium">Standard - €20 / month</label>
+                                <label for="premium">Premium - €20 / month</label>
                             </div>
                             <label for="card-element">
                                 Credit or debit card
@@ -85,29 +89,54 @@
 
         // Handle form submission.
         var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(event) {
+        var cardHolderName = document.getElementById('cardholder-name');
+        var clientSecret = form.dataset.secret;
+
+        form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                    // Inform the user if there was an error.
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                } else {
-                    // Send the token to your server.
-                    stripeTokenHandler(result.token);
+            const {
+                setupIntent,
+                error
+            } = await stripe.confirmCardSetup(
+                clientSecret, {
+                    payment_method: {
+                        card,
+                        billing_details: {
+                            name: cardHolderName.value
+                        }
+                    }
                 }
-            });
+            );
+
+            if (error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(setupIntent);
+            }
+            // stripe.createToken(card).then(function(result) {
+            //     if (result.error) {
+            //         // Inform the user if there was an error.
+            //         var errorElement = document.getElementById('card-errors');
+            //         errorElement.textContent = result.error.message;
+            //     } else {
+            //         // Send the token to your server.
+            //         stripeTokenHandler(result.token);
+            //     }
+            // });
         });
 
         // Submit the form with the token ID.
-        function stripeTokenHandler(token) {
+        function stripeTokenHandler(setupIntent) {
             // Insert the token ID into the form so it gets submitted to the server
             var form = document.getElementById('payment-form');
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripeToken');
-            hiddenInput.setAttribute('value', token.id);
+            hiddenInput.setAttribute('name', 'paymentMethod');
+            hiddenInput.setAttribute('value', setupIntent.payment_method);
             form.appendChild(hiddenInput);
 
             // Submit the form
