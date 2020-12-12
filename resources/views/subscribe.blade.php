@@ -9,8 +9,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
-                    <form action="/charge" method="post" id="payment-form">
-                        <div class="form-row">
+                    <form action="{{ route('subscribe.post') }}" method="post" id="payment-form">
+                        @csrf
+                        <div class="w-1/2 form-row">
+                            <div class="mt-4">
+                                <input type="radio" name="plan" id="standard" value="price_1HxJeMG7vbq98vf0V7q243Bf" checked>
+                                <label for="standard">Standard - €10 / month</label> <br>
+
+                                <input type="radio" name="plan" id="premium" value="price_1HxJeMG7vbq98vf0anLvqeNw" checked>
+                                <label for="premium">Standard - €20 / month</label>
+                            </div>
                             <label for="card-element">
                                 Credit or debit card
                             </label>
@@ -22,7 +30,9 @@
                             <div id="card-errors" role="alert"></div>
                         </div>
 
-                        <button>Submit Payment</button>
+                        <x-jet-button class="mt-4">
+                            Subscribe Now
+                        </x-jet-button>
                     </form>
                 </div>
             </div>
