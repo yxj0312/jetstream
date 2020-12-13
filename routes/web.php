@@ -36,3 +36,13 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/subscribe', function (Re
 Route::middleware(['auth:sanctum', 'verified', 'payingCustomer'])->get('/members', function () {
     return view('members', [ 'intent' => auth()->user()->createSetupIntent()]);
 })->name('members');
+
+Route::middleware(['auth:sanctum', 'verified', 'nonPayingCustomer'])->get('/charge', function () {
+    return view('charge', [ 'intent' => auth()->user()->createSetupIntent()]);
+})->name('charge');
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/charge', function (Request $request) {  
+    auth()->user()->newSubscription('Cashier', $request->plan)->create($request->paymentMethod);
+
+    return redirect('/dashboard');
+})->name('charge.post');
