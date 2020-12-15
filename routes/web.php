@@ -46,5 +46,8 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/charge', function (Reque
         1000, $request->paymentMethod
     );
 
+    // auth()->user()->createAsStripeCustomer();
+    // auth()->user()->updateDefaultPaymentMethod($request->paymentMethod);
+    // auth()->user()->invoiceFor('One Time Fee', 1500);
     return redirect('/dashboard');
 })->name('charge.post');
