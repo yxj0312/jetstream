@@ -4,7 +4,7 @@
             ALPINE1
         </h2>
     </x-slot>
-    
+
     <!-- <div x-data="{ cards: [{ color: 'green', flipped: false, cleared: false }] }" class="px-10 flex items-center justify-center min-h-screen"> -->
     <div x-data="game()" class="px-10 flex items-center justify-center min-h-screen">
         <h1 class="fixed top-0 right-0 p-10 font-bold text-3xl">
@@ -15,75 +15,121 @@
         <div class="flex-1 grid grid-cols-4 gap-10">
             <template x-for="(card, index) in cards" :key="index">
                 <div>
-                    <button x-show="! card.cleared"
-                            :style="'background: ' + (card.flipped ? card.color : '#999')"
-                            :disabled="flippedCards.length >= 2"
-                            class="w-full h-32"
-                            @click="flipCard(card)"
-                    >
+                    <button x-show="! card.cleared" :style="'background: ' + (card.flipped ? card.color : '#999')" :disabled="flippedCards.length >= 2" class="w-full h-32" @click="flipCard(card)">
                     </button>
                 </div>
             </template>
         </div>
     </div>
+
+    <!-- Flash Message -->
+    <div x-data="{ show: false, message: '' }" x-show.transition.opacity="show" x-text="message" @flash.window="
+            message = $event.detail.message;
+            show = true;
+            setTimeout(() => show = false, 1000)
+        " class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-4 rounded">
+    </div>
 </x-app-layout>
 
 <script>
+    function pause(milliseconds = 1000) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    function flash(message) {
+        window.dispatchEvent(new CustomEvent('flash', {
+            detail: {
+                message
+            }
+        }));
+    }
+
     function game() {
-            return {
-                cards: [
-                    { color: 'green', flipped: false, cleared: false },
-                    { color: 'red', flipped: false, cleared: false },
-                    { color: 'blue', flipped: false, cleared: false },
-                    { color: 'yellow', flipped: false, cleared: false },
-                    { color: 'green', flipped: false, cleared: false },
-                    { color: 'red', flipped: false, cleared: false },
-                    { color: 'blue', flipped: false, cleared: false },
-                    { color: 'yellow', flipped: false, cleared: false },
-                ].sort(() => Math.random() - .5),
-
-                get flippedCards() {
-                    return this.cards.filter(card => card.flipped);
+        return {
+            cards: [{
+                    color: 'green',
+                    flipped: false,
+                    cleared: false
                 },
-
-                get clearedCards() {
-                    return this.cards.filter(card => card.cleared);
+                {
+                    color: 'red',
+                    flipped: false,
+                    cleared: false
                 },
-
-                get remainingCards() {
-                    return this.cards.filter(card => ! card.cleared);
+                {
+                    color: 'blue',
+                    flipped: false,
+                    cleared: false
                 },
-
-                get points() {
-                    return this.clearedCards.length;
+                {
+                    color: 'yellow',
+                    flipped: false,
+                    cleared: false
                 },
+                {
+                    color: 'green',
+                    flipped: false,
+                    cleared: false
+                },
+                {
+                    color: 'red',
+                    flipped: false,
+                    cleared: false
+                },
+                {
+                    color: 'blue',
+                    flipped: false,
+                    cleared: false
+                },
+                {
+                    color: 'yellow',
+                    flipped: false,
+                    cleared: false
+                },
+            ].sort(() => Math.random() - .5),
 
-                async flipCard(card) {
-                    card.flipped = ! card.flipped;
+            get flippedCards() {
+                return this.cards.filter(card => card.flipped);
+            },
 
-                    if (this.flippedCards.length !== 2) return;
+            get clearedCards() {
+                return this.cards.filter(card => card.cleared);
+            },
 
-                    if (this.hasMatch()) {
-                        flash('You found a match!');
+            get remainingCards() {
+                return this.cards.filter(card => !card.cleared);
+            },
 
-                        await pause();
+            get points() {
+                return this.clearedCards.length;
+            },
 
-                        this.flippedCards.forEach(card => card.cleared = true);
+            async flipCard(card) {
+                card.flipped = !card.flipped;
 
-                        if (! this.remainingCards.length) {
-                            alert('You Won!');
-                        }
-                    } else {
-                        await pause();
+                if (this.flippedCards.length !== 2) return;
+
+                if (this.hasMatch()) {
+                    flash('You found a match!');
+
+                    await pause();
+
+                    this.flippedCards.forEach(card => card.cleared = true);
+
+                    if (!this.remainingCards.length) {
+                        alert('You Won!');
                     }
-
-                    this.flippedCards.forEach(card => card.flipped = false);
-                },
-
-                hasMatch() {
-                    return this.flippedCards[0]['color'] === this.flippedCards[1]['color'];
+                } else {
+                    await pause();
                 }
-            };
-        }
-    </script>
+
+                this.flippedCards.forEach(card => card.flipped = false);
+            },
+
+            hasMatch() {
+                return this.flippedCards[0]['color'] === this.flippedCards[1]['color'];
+            }
+        };
+    }
+</script>
 </script>
