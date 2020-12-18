@@ -11,11 +11,17 @@
             <span x-text="points"></span>
             <span class="text-xs">pts</span>
         </h1>
-
+        
+        <!-- disabled selected after two selected, waiting for result -->
         <div class="flex-1 grid grid-cols-4 gap-10">
             <template x-for="(card, index) in cards" :key="index">
                 <div>
-                    <button x-show="! card.cleared" :style="'background: ' + (card.flipped ? card.color : '#999')" :disabled="flippedCards.length >= 2" class="w-full h-32" @click="flipCard(card)">
+                    <button 
+                    x-show="! card.cleared" 
+                    :style="'background: ' + (card.flipped ? card.color : '#999')" 
+                    :disabled="flippedCards.length >= 2" 
+                    class="w-full h-32" 
+                    @click="flipCard(card)">
                     </button>
                 </div>
             </template>
@@ -23,11 +29,14 @@
     </div>
 
     <!-- Flash Message -->
-    <div x-data="{ show: false, message: '' }" x-show.transition.opacity="show" x-text="message" @flash.window="
-            message = $event.detail.message;
+    <div x-data="{ show: false, message: '' }" 
+        x-show.transition.opacity="show" 
+        x-text="message" 
+        @flash.window=
+        "message = $event.detail.message;
             show = true;
-            setTimeout(() => show = false, 1000)
-        " class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-4 rounded">
+            setTimeout(() => show = false, 1000)" 
+        class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-4 rounded">
     </div>
 </x-app-layout>
 
@@ -112,6 +121,7 @@
                 if (this.hasMatch()) {
                     flash('You found a match!');
 
+                    // To show the matched result
                     await pause();
 
                     this.flippedCards.forEach(card => card.cleared = true);
