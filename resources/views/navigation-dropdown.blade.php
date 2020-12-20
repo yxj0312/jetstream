@@ -63,6 +63,11 @@
                                 Test3: Toggle Visibility Using State
                             </x-jet-nav-link>
                         </div>
+                        <div class="block px-4 py-2 text-xs text-gray-400">
+                           <x-jet-nav-link href="{{ route('alpine.test4') }}" :active="request()->routeIs('alpine.test4')">
+                                Test4: Two-Way Data Binding
+                            </x-jet-nav-link>
+                        </div>
                     </x-slot>
                 </x-jet-dropdown>
             </div>
