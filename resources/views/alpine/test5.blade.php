@@ -6,8 +6,14 @@
     </x-slot>
 
     <div class="p-10 max-w-lg mx-auto">
-        <div class="bg-gray-300 px-10 py-6 rounded" x-data="{ tasks:[], newTask: '' }">
-            <form action="" @submit.prevent="tasks.push({body: newTask, completed: false}); newTask=''">
+        <!-- <div class="bg-gray-300 px-10 py-6 rounded" 
+        x-data="{ tasks:[], newTask: '' }" 
+        > -->
+        <div class="bg-gray-300 px-10 py-6 rounded" 
+        x-data="taskApp()" 
+        >
+            <!-- <form action="" @submit.prevent="tasks.push({body: newTask, completed: false}); newTask=''"> -->
+            <form action="" @submit.prevent="submit">
                 <input 
                 type="text" 
                 placeholder="Go to the market..." 
@@ -28,3 +34,18 @@
 
 
 </x-app-layout>
+
+
+<script>
+    // Advise: keep inline as long as u can
+    let taskApp = () => {
+        return { 
+            tasks: [], 
+            newTask: '',
+
+            submit() {
+               this.tasks.push({body: this.newTask, completed: false}); this.newTask=''
+            }  
+        };
+    }
+</script>
