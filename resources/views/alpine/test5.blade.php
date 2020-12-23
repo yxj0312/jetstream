@@ -36,7 +36,7 @@
 </x-app-layout>
 
 
-<script>
+<!-- <script>
     // Advise: keep inline as long as u can
     let taskApp = () => {
         return { 
@@ -48,4 +48,4 @@
             }  
         };
     }
-</script>
+</script> -->
