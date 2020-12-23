@@ -73,6 +73,11 @@
                                 Test5: How and When to Extract Component Logic
                             </x-jet-nav-link>
                         </div>
+                        <div class="block px-4 py-2 text-xs text-gray-400">
+                           <x-jet-nav-link href="{{ route('alpine.test6') }}" :active="request()->routeIs('alpine.test6')">
+                                Test6: Transitions 101
+                            </x-jet-nav-link>
+                        </div>
                     </x-slot>
                 </x-jet-dropdown>
             </div>

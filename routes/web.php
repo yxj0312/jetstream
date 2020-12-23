@@ -39,6 +39,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('alpine')->group(functio
     Route::get('/test5', function () {
         return view('alpine.test5');
     })->name('alpine.test5');
+
+    Route::get('/test6', function () {
+        return view('alpine.test6');
+    })->name('alpine.test6');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
