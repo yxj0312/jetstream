@@ -68,13 +68,13 @@
 						</div>
 						<input class="edit" value="Create a TodoMVC template">
 					</li> -->
-					<template x-for="todo in todos" :key="todo.id">
+					<template x-for="todo in filteredTodos" :key="todo.id">
 						<li :class="{
 							editing: todo === editedTodo,
 							completed: todo.completed
 						}">
 							<div class="view">
-								<input @click="todo.completed = ! todo.completed" class="toggle" type="checkbox">
+								<input x-model="todo.completed" @click="todo.completed = ! todo.completed" class="toggle" type="checkbox">
 								<label x-text="todo.body"
 									@click="editTodo(todo)"
 								></label>
@@ -96,17 +96,23 @@
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
-						<a class="selected" href="#/">All</a>
+						<a @click.prevent="filter= 'all'" :class="{selected: filter === 'all'}" href="#/">All</a>
 					</li>
+
 					<li>
-						<a href="#/active">Active</a>
+						<a @click.prevent="filter= 'active'" :class="{selected: filter === 'active'}" href="#/active">Active</a>
 					</li>
+
 					<li>
-						<a href="#/completed">Completed</a>
+						<a @click.prevent="filter= 'completed'" :class="{selected: filter === 'completed'}" href="#/completed">Completed</a>
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button x-show="completed.length" class="clear-completed">Clear completed</button>
+				<button 
+					x-show="completed.length"
+					@click="todos = active"
+					class="clear-completed"
+				>Clear completed</button>
 			</footer>
 		</section>
 		<footer class="info">
