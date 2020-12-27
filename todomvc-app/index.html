@@ -8,9 +8,10 @@
 		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
 		<link rel="stylesheet" href="css/app.css">
 		<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+		<script src="js/todos.js"></script>
 	</head>
 	<body>
-		<section 
+		<!-- <section 
 			x-data="{
 				todos:[],
 
@@ -40,6 +41,9 @@
 					todo.completed = true;
 				}
 			}"
+			class="todoapp"> -->
+		<section
+			x-data="todos()"
 			class="todoapp">
 			<header class="header">
 				<h1>todos</h1>
