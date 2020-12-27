@@ -2,8 +2,14 @@ window.todos = function () {
 	return {
 		todos: [],
 
+		editedTodo: false,
+
 		get active() {
 			return this.todos.filter(todo => !todo.completed)
+		},
+
+		get completed() {
+			return this.todos.filter(todo => todo.completed)
 		},
 
 		newTodo: '',
@@ -16,6 +22,12 @@ window.todos = function () {
 			});
 
 			this.newTodo = ''
+		},
+
+		editTodo(todo) {
+			this.editedTodo = todo;
+			console.log(this.editedTodo)
+			console.log(todo === this.editedTodo)
 		},
 
 		deleteTodo(todo) {
