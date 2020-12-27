@@ -2,7 +2,7 @@ window.todos = function () {
 	return {
 		todos: [],
 
-		editedTodo: false,
+		editedTodo: null,
 
 		get active() {
 			return this.todos.filter(todo => !todo.completed)
@@ -25,9 +25,24 @@ window.todos = function () {
 		},
 
 		editTodo(todo) {
+			todo.cachedBody = todo.body;
 			this.editedTodo = todo;
-			console.log(this.editedTodo)
-			console.log(todo === this.editedTodo)
+		},
+
+
+		cancelEdit(todo) {
+			todo.body = todo.cachedBody;
+
+			this.editedTodo = null;
+			
+			delete todo.cachedBody;
+		},
+
+		editComplete(todo) {
+			if (todo.body.trim() === '') {
+				return this.deleteTodo(todo);
+			}
+			this.editedTodo = null;
 		},
 
 		deleteTodo(todo) {

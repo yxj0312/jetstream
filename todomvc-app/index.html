@@ -80,7 +80,11 @@
 								></label>
 								<button @dbclick="deleteTodo(todo)" class="destroy"></button>
 							</div>
-							<input class="edit" value="Rule the web">
+							<input class="edit" 
+								x-model="todo.body" 
+								@keyup.enter="editComplete(todo)"
+								@keyup.escape = "cancelEdit(todo)"
+								class="edit">
 						</li>
 					</template>
 				</ul>
