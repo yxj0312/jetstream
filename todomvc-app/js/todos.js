@@ -25,6 +25,9 @@ window.todos = function () {
 			}[this.filter];
 		},
 
+		get allComplete() {
+			return this.todos.length === this.completed.length
+		},
 
 		addTodo() {
 			if (!this.newTodo) {
@@ -66,8 +69,10 @@ window.todos = function () {
 			this.todos.splice(position, 1);
 		},
 
-		completeTodo(todo) {
-			todo.completed = true;
+		toggleAllTodos() {
+			let allComplete = this.allComplete;
+
+			this.todos.forEach(todo => todo.completed =! allComplete)
 		}
 	}
 }
