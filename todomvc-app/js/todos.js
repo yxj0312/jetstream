@@ -6,15 +6,29 @@ window.todoStore = {
 	}
 };
 
+// Another Approach with Constructor
+// window.Todo = function(body) {
+// 	this.id = Date.now();
+// 	this.body = body;
+// 	this.completed = false;
+
+	// Give u a hook, like __set/__call magic method in php
+	// return new Proxy(this, {
+	// 	set(obj,prop, val) {
+	// 		obj[prop] = val;
+
+	// dispatch a event
+	// todoStore.save();
+	// 	}
+	// })
+// }
+
 
 window.todos = function () {
 	return {
 		...todoStore,
-
 		filter: 'all',
-
 		newTodo: '',
-
 		editedTodo: null,
 
 
@@ -42,6 +56,10 @@ window.todos = function () {
 			if (!this.newTodo) {
 				return;
 			}
+
+			// More OOP Approach with Constructor
+			// this.todos.push(new Todo(this.newTodo));
+
 			this.todos.push({
 				id: Date.now(),
 				body: this.newTodo,
