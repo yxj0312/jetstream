@@ -54,7 +54,7 @@
 			</header>
 
 			<section class="main" x-show="todos.length">
-				<input id="toggle-all" class="toggle-all" type="checkbox" x-model="allComplete" @click="toggleAllTodos">
+				<input id="toggle-all" class="toggle-all" type="checkbox" x-model="allComplete" @click="toggleAllComplete">
 				<label for="toggle-all">Mark all as complete</label>
 
 				<ul class="todo-list">
@@ -66,11 +66,21 @@
 							completed: todo.completed
 						}">
 							<div class="view">
-								<input x-model="todo.completed" @click="todo.completed = ! todo.completed" class="toggle" type="checkbox">
-								<label x-text="todo.body"
-									@click="editTodo(todo)"
+								<input 
+									x-model="todo.completed" 
+									@click="toggleTodoCompletion(todo)" 
+									class="toggle" 
+									type="checkbox">
+
+								<label 
+									x-text="todo.body"
+									@dblclick="editTodo(todo)"
 								></label>
-								<button @dbclick="deleteTodo(todo)" class="destroy"></button>
+
+								<button
+									@click="deleteTodo(todo)" 
+									class="destroy"
+								></button>
 							</div>
 							<input class="edit" 
 								x-model="todo.body" 
@@ -105,7 +115,7 @@
 				<!-- Hidden if no completed items are left ↓ -->
 				<button 
 					x-show="completed.length"
-					@click="todos = active"
+					@click="clearCompletedTodos()"
 					class="clear-completed"
 				>Clear completed</button>
 			</footer>
