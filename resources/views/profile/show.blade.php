@@ -17,6 +17,10 @@
                 </div>
             @endif
 
+            @livewire('counter')
+            <div>Something here</div>
+            <x-jet-section-border />
+
             @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
                 <x-jet-section-border />
 
