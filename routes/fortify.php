@@ -20,7 +20,7 @@ use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
     // Authentication...
-    Route::get('/signin', [AuthenticatedSessionController::class, 'create'])
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware(['guest'])
         ->name('login');
 
